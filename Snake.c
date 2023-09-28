@@ -1,5 +1,8 @@
 #include <stdio.h>
 #include <windows.h>
+#include <conio.h>
+#include <stdbool.h>
+
 
 unsigned char higth = 40;
 
@@ -7,6 +10,7 @@ unsigned char higth = 40;
 #define higth 30
 
 char plate[higth + 1][width + 1];
+bool loose = false;
 
 typedef struct CubeOfSnake {
     int x, y;
@@ -73,6 +77,10 @@ void moveLeft() {
     int x = snake.cub[0].x;
     int y = snake.cub[0].y;
     snake.cub[0].x--;
+    if (snake.cub[0].x == 0) {
+        loose = true;
+        return;
+    }
     if (snake.cub[0].x == snake.cub[1].x) {
         snake.cub[0].x++;
         return;
@@ -95,6 +103,10 @@ void moveRight() {
     int x = snake.cub[0].x;
     int y = snake.cub[0].y;
     snake.cub[0].x++;
+    if (snake.cub[0].x == width - 1) {
+        loose = true;
+        return;
+    }
     if (snake.cub[0].x == snake.cub[1].x) {
         snake.cub[0].x--;
         return;
@@ -117,6 +129,10 @@ void moveUp() {
     int x = snake.cub[0].x;
     int y = snake.cub[0].y;
     snake.cub[0].y--;
+    if (snake.cub[0].y == 0) {
+        loose = true;
+        return;
+    }
     if (snake.cub[0].y == snake.cub[1].y) {
         snake.cub[0].y++;
         return;
@@ -140,6 +156,10 @@ void moveDown() {
     int x = snake.cub[0].x;
     int y = snake.cub[0].y;
     snake.cub[0].y++;
+    if (snake.cub[0].y == higth - 1) {
+        loose = true;
+        return;
+    }
     if (snake.cub[0].y == snake.cub[1].y) {
         snake.cub[0].y--;
         return;
@@ -161,9 +181,10 @@ void moveDown() {
 
 void move() {
     char step;
-    scanf("%c", &step);
+    // scanf("%c", &step);
+    step = getch();
 
-    while (step != 'q')
+    while (step != 'q' || !loose)
     {
 
         switch (step) {
@@ -185,8 +206,10 @@ void move() {
         }
         }
         putSnakeOnPlate();
+        system("cls");
         showPlate();
-        scanf("%c", &step);
+        // scanf("%c", &step);
+        step = getch();
     }
 }
 
