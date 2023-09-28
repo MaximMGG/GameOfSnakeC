@@ -65,10 +65,18 @@ void putSnakeOnPlate() {
     }
 }
 
-moveLeft() {
+void hideTail(int x, int y) {
+    plate[y][x] = ' ';
+}
+
+void moveLeft() {
     int x = snake.cub[0].x;
     int y = snake.cub[0].y;
     snake.cub[0].x--;
+    if (snake.cub[0].x == snake.cub[1].x) {
+        snake.cub[0].x++;
+        return;
+    }
     for (int i = 1; i < snake.length; i++)
     {
         int nx = snake.cub[i].x;
@@ -80,12 +88,17 @@ moveLeft() {
         x = nx;
         y = ny;
     }
+    hideTail(x, y);
 }
 
-moveRight() {
+void moveRight() {
     int x = snake.cub[0].x;
     int y = snake.cub[0].y;
     snake.cub[0].x++;
+    if (snake.cub[0].x == snake.cub[1].x) {
+        snake.cub[0].x--;
+        return;
+    }
     for (int i = 1; i < snake.length; i++)
     {
         int nx = snake.cub[i].x;
@@ -97,18 +110,83 @@ moveRight() {
         x = nx;
         y = ny;
     }
+    hideTail(x, y);
+}
 
+void moveUp() {
+    int x = snake.cub[0].x;
+    int y = snake.cub[0].y;
+    snake.cub[0].y--;
+    if (snake.cub[0].y == snake.cub[1].y) {
+        snake.cub[0].y++;
+        return;
+    }
+
+    for (int i = 1; i < snake.length; i++)
+    {
+        int nx = snake.cub[i].x;
+        int ny = snake.cub[i].y;
+
+        snake.cub[i].x = x;
+        snake.cub[i].y = y;
+        
+        x = nx;
+        y = ny;
+    }
+    hideTail(x, y);
+}
+
+void moveDown() {
+    int x = snake.cub[0].x;
+    int y = snake.cub[0].y;
+    snake.cub[0].y++;
+    if (snake.cub[0].y == snake.cub[1].y) {
+        snake.cub[0].y--;
+        return;
+    }
+
+    for (int i = 1; i < snake.length; i++)
+    {
+        int nx = snake.cub[i].x;
+        int ny = snake.cub[i].y;
+
+        snake.cub[i].x = x;
+        snake.cub[i].y = y;
+        
+        x = nx;
+        y = ny;
+    }
+    hideTail(x, y);
 }
 
 void move() {
     char step;
     scanf("%c", &step);
 
-    switch (step) {
-        case 'a' : {moveLeft(); break;}
-        case 'd' : {moveRight(); break;}
-        case 'w' : {moveUp(); break;}
-        case 's' : {moveDown(); break;}
+    while (step != 'q')
+    {
+
+        switch (step) {
+        case 'a': {
+            moveLeft();
+            break;
+        }
+        case 'd': {
+            moveRight();
+            break;
+        }
+        case 'w': {
+            moveUp();
+            break;
+        }
+        case 's': {
+            moveDown();
+            break;
+        }
+        }
+        putSnakeOnPlate();
+        showPlate();
+        scanf("%c", &step);
     }
 }
 
@@ -127,6 +205,7 @@ int main() {
     putSnakeOnPlate();
 
     showPlate();
+    move();
 }
 
 
