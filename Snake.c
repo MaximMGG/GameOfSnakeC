@@ -179,14 +179,24 @@ void moveDown() {
     hideTail(x, y);
 }
 
+void setCors(int x, int y) {
+    COORD coord;
+    coord.X = x;
+    coord.Y = y;
+    SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coord);
+}
+
 void move() {
     char step;
-    // scanf("%c", &step);
-    step = getch();
+    initPlate();
+    initSnake();
+    putSnakeOnPlate();
 
     while (step != 'q' || !loose)
     {
 
+        setCors(0, 0);
+        showPlate();
         switch (step) {
         case 'a': {
             moveLeft();
@@ -205,11 +215,14 @@ void move() {
             break;
         }
         }
+
+        if (GetKeyState('W')) step = 'w';
+        if (GetKeyState('S')) step = 's';
+        if (GetKeyState('A')) step = 'a';
+        if (GetKeyState('D')) step = 'd';
+        if (GetKeyState(VK_ESCAPE) < 0) loose = true;
         putSnakeOnPlate();
-        system("cls");
         showPlate();
-        // scanf("%c", &step);
-        step = getch();
     }
 }
 
@@ -223,11 +236,11 @@ void move() {
 
 
 int main() {
-    initPlate();
-    initSnake();
-    putSnakeOnPlate();
+    // initPlate();
+    // initSnake();
+    // putSnakeOnPlate();
+    // showPlate();
 
-    showPlate();
     move();
 }
 
