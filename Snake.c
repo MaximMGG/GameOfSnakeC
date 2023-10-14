@@ -38,7 +38,7 @@ void initPlate() {
 }
 
 void showPlate() {
-    for (int i = 0; i < higth; i++) {
+    for (int i = 0; i < higth - 1; i++) {
         printf("%s", plate[i]);
         if (i != higth - 1) {
             printf("\n");
@@ -195,8 +195,8 @@ void move() {
     while (step != 'q' || !loose)
     {
 
-        setCors(0, 0);
         showPlate();
+        setCors(0, 0);
         switch (step) {
         case 'a': {
             moveLeft();
