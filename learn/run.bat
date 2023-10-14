@@ -1,5 +1,5 @@
 @echo off
 
-gcc -o learn learn2.c
+gcc -o learn learn3.c
 
 learn
