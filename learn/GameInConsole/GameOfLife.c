@@ -20,9 +20,36 @@ int** array2D(int w, int h) {
     return tmp;
 }
 
+int lives(int **arr, int w, int h) {
+    int l = 0;
+    forXY(a, b, w, h) if (arr[a][b] == 1) l++;
+    return l;
+}
+
+
+int neighborows(int **arr, int w, int h, int x, int y) {
+    int n = 0;
+    int p[3] = {-1, 0, 1};
+    forXY(a, b, 3, 3) {
+        int _x = x + p[a];
+        int _y = y + p[b];
+        if(_x >= 0 && _y >= 0 && _x < w && _y < w)
+            if(_x != x && _y != y) 
+                if(arr[_x][_y] == 1) n++;
+    }
+    return n;
+}
 
 int** next(int **arr, int w, int h) {
-
+    int **new = array2D(w, h);
+    forXY(a, b, w, h) {
+        int n = neighborows(arr, w, h, a, b);
+        if ((n < 2 || n > 4) && arr[a][b] == 1) 
+            new[a][b] = 0;
+        if (n == 3 && arr[a][b] == 0)
+            new[a][b] = 1;
+    }
+    return new;
 }
 
 
@@ -45,10 +72,18 @@ int main() {
     }
 
 
+
     while(1) {
+
+        int live = lives(grid, S, S);
+
         print(grid, S, S);
         sleep(1);
-        grid = next(grid);
+        grid = next(grid, S, S);
+
+        if (live == 0)
+            break;
+
     }
 
 
