@@ -3,6 +3,7 @@
 #include <inttypes.h>
 
 void ints();
+void doubles();
 
 int main() {
 
@@ -30,6 +31,7 @@ int main() {
     // printf("Code of symbol %c is %d", ch, ch);
 
     ints();
+    doubles();
 
 
     return 0;
@@ -46,6 +48,17 @@ void ints(){
     printf("Try to use \"macros\" from file inttypes.h: ");
     printf("me32 = %" PRId32 "\n", me32);
 
+}
+
+
+void doubles() {
+    float aboat = 32000.0f;
+    double abet = 2.14e9;
+    long double dip = 5.32e-5;
+
+    printf("%f can be written like %e\n", aboat, aboat);
+    printf("In %a sixtens\n", abet);
+    printf("%Lf could be like %Le\n", dip, dip);
 }
 
 
