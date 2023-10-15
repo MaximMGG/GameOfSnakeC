@@ -1,6 +1,9 @@
 #include <ncursesw/ncurses.h>
 #include <pthread.h>
 #include <stdbool.h>
+#include <time.h>
+#include <stdlib.h>
+#include <windows.h>
 
 #define height 36 
 #define width 135 
@@ -32,19 +35,26 @@ int step;
 struct Apple apple;
 
 void initMap() {
-    for(int i = 0; i < width - 1; i++){
-        for(int j = 0; j < height - 1; j++){
-            if (i == 0 || i == width - 2) map[j][i] = '#';
+    for(int i = 0; i < height - 1; i++){
+        for(int j = 0; j < width - 1; j++){
+            if (i == 0 || i == height - 2) map[i][j] = '#';
             else {
-                map[j][i] = j == 0 || j == height - 2 ? '#' : ' ';
+                map[i][j] = j == 0 || j == width - 2 ? '#' : ' ';
             }
         }
     }
 }
 
+void initApple() {
+    srand(time(NULL));
+    apple.y = rand() % height;
+    apple.x = rand() % width;
+    map[apple.y][apple.x] = '$';
+}
+
 
 void showMap() {
-    for(int i = 0; i < width; i++){
+    for(int i = 0; i < height; i++){
         mvprintw(i, 0, map[i]);
     }
 }
@@ -105,20 +115,30 @@ void DoMove(enum Direction d) {
         eat = false;
     }
 }
+void putAppleOnMap() {
+    if (eat == false) return;
+    srand(time(NULL));
+    map[apple.y][apple.x] = ' ';
+    apple.x = rand() % width;
+    apple.y = rand() % height;
+    map[apple.y][apple.x] = '$';
+}
 
-void *moveSnake(void *snake) {
+void *moveSnake() {
     do {
         clear();
         putSnakeOnMap();
-        showMap(); 
-
+        putAppleOnMap();
+        showMap();
+    
         if (step == KEY_DOWN) DoMove(DOWN);
-        if (step == KEY_UP) DoMove(UP);
-        if (step == KEY_LEFT) DoMove(LEFT);
-        if (step == KEY_RIGHT) DoMove(RIGHT);
-
-        if(snake.coord[0].x == apple.x)  eat = true;
-
+        else if (step == KEY_UP) DoMove(UP);
+        else if (step == KEY_LEFT) DoMove(LEFT);
+        else if (step == KEY_RIGHT) DoMove(RIGHT);
+    
+        if(snake.coord[0].x == apple.x
+                && snake.coord[0].y == apple.y)  eat = true;
+        Sleep(100);
     } while(run);
 }
 
@@ -128,16 +148,22 @@ int main(void) {
     keypad(stdscr, true); // allow arrows
     noecho(); // don't display input
     curs_set(0); // hide cursor
-    Snake snake;
+
     initSnake();
     initMap();
+    initApple();
+    step = KEY_UP;
+
     pthread_t th1;
     pthread_create(&th1, NULL, *moveSnake, 0);
 
     do {
-        mvprintw(10, 10, "Hello fomr main thread");
+        char prevStep = step;
         step = getch();
+        if (step != KEY_UP || step != KEY_DOWN || step != KEY_LEFT || step != KEY_RIGHT)
+            step = prevStep;
     } while (getch() != 27);
+
     run = false;
 
     pthread_join(th1, NULL);

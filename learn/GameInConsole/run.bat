@@ -1,3 +1,3 @@
 @echo off
-gcc -o game Snake.c -lncursesw
+gcc -o game Game.c -lncursesw
 game
