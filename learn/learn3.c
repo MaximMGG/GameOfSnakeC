@@ -1,7 +1,8 @@
 #include <stdio.h>
 #include <stdbool.h>
+#include <inttypes.h>
 
-
+void ints();
 
 int main() {
 
@@ -23,5 +24,28 @@ int main() {
     printf("big = %ld, but not %hd size = %lld\n", big, big, sizeof(big));
     printf("verybig = %lld, but not %ld size = %lld\n", verybig, verybig, sizeof(verybig));
 
+    char ch;
+    printf("Enter some symbol\n");
+    // scanf("%c", &ch);
+    // printf("Code of symbol %c is %d", ch, ch);
+
+    ints();
+
+
     return 0;
 }
+
+
+void ints(){ 
+
+    int32_t me32;
+    me32 = 45933945;
+    printf("Firstly let's imagen that int32_t is int: ");
+    printf("me32 = %d\n", me32);
+    printf("Will not make a propose.\n");
+    printf("Try to use \"macros\" from file inttypes.h: ");
+    printf("me32 = %" PRId32 "\n", me32);
+
+}
+
+
