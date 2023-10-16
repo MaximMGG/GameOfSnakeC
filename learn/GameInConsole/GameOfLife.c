@@ -46,8 +46,10 @@ int** next(int **arr, int w, int h) {
         int n = neighborows(arr, w, h, a, b);
         if ((n < 2 || n > 4) && arr[a][b] == 1) 
             new[a][b] = 0;
-        if (n == 3 && arr[a][b] == 0)
+        else if (n == 3 && arr[a][b] == 0)
             new[a][b] = 1;
+        else 
+            new[a][b] = arr[a][b];
     }
     return new;
 }
@@ -72,17 +74,20 @@ int main() {
     }
 
 
-
+    int dl = 0;
     while(1) {
 
         int live = lives(grid, S, S);
 
+        if (live == 0 || live == dl)
+            break;
+
+        puts("-----------------------");
         print(grid, S, S);
-        sleep(1);
+        // sleep(1);
+        dl = live;
         grid = next(grid, S, S);
 
-        if (live == 0)
-            break;
 
     }
 

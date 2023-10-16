@@ -148,6 +148,7 @@ int main(void) {
     keypad(stdscr, true); // allow arrows
     noecho(); // don't display input
     curs_set(0); // hide cursor
+    timeout(0);
 
     initSnake();
     initMap();
