@@ -1,5 +1,4 @@
 #include <ncursesw/ncurses.h>
-#include <pthread.h>
 #include <stdbool.h>
 #include <time.h>
 #include <stdlib.h>
@@ -31,7 +30,7 @@ typedef struct {
 } Snake;
 
 Snake snake;
-int step;
+// int step;
 struct Apple apple;
 
 void initMap() {
@@ -124,17 +123,27 @@ void putAppleOnMap() {
     map[apple.y][apple.x] = '$';
 }
 
-void *moveSnake() {
+void moveSnake() {
+    short step = KEY_UP;
+    short prevStep = KEY_UP;
     do {
         clear();
         putSnakeOnMap();
         putAppleOnMap();
         showMap();
-    
-        if (step == KEY_DOWN) DoMove(DOWN);
-        else if (step == KEY_UP) DoMove(UP);
-        else if (step == KEY_LEFT) DoMove(LEFT);
-        else if (step == KEY_RIGHT) DoMove(RIGHT);
+
+        step = getch();
+
+        if (step == KEY_DOWN) {DoMove(DOWN); prevStep = step;}
+        else if (step == KEY_UP) {DoMove(UP); prevStep = step;}
+        else if (step == KEY_LEFT) {DoMove(LEFT); prevStep = step;}
+        else if (step == KEY_RIGHT) {DoMove(RIGHT);prevStep = step;}
+        else {
+            if (prevStep == KEY_DOWN) DoMove(DOWN);
+            else if (prevStep == KEY_UP) DoMove(UP);
+            else if (prevStep == KEY_LEFT) DoMove(LEFT);
+            else if (prevStep == KEY_RIGHT) DoMove(RIGHT);
+        }
     
         if(snake.coord[0].x == apple.x
                 && snake.coord[0].y == apple.y)  eat = true;
@@ -153,21 +162,13 @@ int main(void) {
     initSnake();
     initMap();
     initApple();
-    step = KEY_UP;
+    moveSnake();
 
-    pthread_t th1;
-    pthread_create(&th1, NULL, *moveSnake, 0);
 
-    do {
-        char prevStep = step;
-        step = getch();
-        if (step != KEY_UP || step != KEY_DOWN || step != KEY_LEFT || step != KEY_RIGHT)
-            step = prevStep;
-    } while (getch() != 27);
+    if (run == false) {
+        puts("Your are loose, next time");
+    }
 
-    run = false;
-
-    pthread_join(th1, NULL);
     endwin();
     return 0;
 }
