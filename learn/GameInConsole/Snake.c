@@ -8,6 +8,7 @@
 #define width 135 
 bool run = true;
 bool eat = false;
+bool appleExist = false;
 
 char map[height][width];
 
@@ -30,7 +31,6 @@ typedef struct {
 } Snake;
 
 Snake snake;
-// int step;
 struct Apple apple;
 
 void initMap() {
@@ -46,8 +46,8 @@ void initMap() {
 
 void initApple() {
     srand(time(NULL));
-    apple.y = rand() % height;
-    apple.x = rand() % width;
+    apple.y = (int) rand() % height;
+    apple.x = (int) rand() % width;
     map[apple.y][apple.x] = '$';
 }
 
@@ -83,21 +83,37 @@ void DoMove(enum Direction d) {
 
     switch (d) {
         case UP : {
-            if (--snake.coord[0].y == snake.coord[1].y) return;
+            if (snake.coord[0].y - 1 == snake.coord[1].y) {
+                ++snake.coord[0].y;
+            } else {
+            --snake.coord[0].y;
+            }
             break;
-                  }
+        }
         case DOWN : {
-            if (++snake.coord[0].y == snake.coord[1].y) return;
+            if (snake.coord[0].y + 1 == snake.coord[1].y) {
+                --snake.coord[0].y;
+            } else {
+                ++snake.coord[0].y;
+            }
             break;
-                    }
+        }
         case LEFT : {
-            if (--snake.coord[0].x == snake.coord[1].x) return;
+            if (snake.coord[0].x - 1 == snake.coord[1].x) {
+                ++snake.coord[0].x;
+            } else {
+                --snake.coord[0].x;
+            }
             break;
-                    }
+        }
         case RIGHT : {
-            if (--snake.coord[0].x == snake.coord[1].x) return;
+            if (snake.coord[0].x + 1 == snake.coord[1].x) {
+                --snake.coord[0].x;
+            } else {
+                ++snake.coord[0].x;
+            }
             break;
-                     }
+        }
     }
 
     for(int i = 1; i < snake.length; i++){
@@ -107,20 +123,25 @@ void DoMove(enum Direction d) {
         snake.coord[i].x = oldX;
         snake.coord[i].y = oldY;
     }
+
+    map[y][x] = ' ';
+
     if (eat == true) {
         snake.length++;
         snake.coord[snake.length - 1].x = x;
         snake.coord[snake.length - 1].y = y;
-        eat = false;
     }
 }
+
 void putAppleOnMap() {
-    if (eat == false) return;
-    srand(time(NULL));
-    map[apple.y][apple.x] = ' ';
-    apple.x = rand() % width;
-    apple.y = rand() % height;
-    map[apple.y][apple.x] = '$';
+    if (eat == true) {
+       srand(time(NULL));
+       map[apple.y][apple.x] = ' ';
+       apple.x = rand() % width;
+       apple.y = rand() % height;
+       map[apple.y][apple.x] = '$';
+       eat = false;
+    }
 }
 
 void moveSnake() {
@@ -143,6 +164,9 @@ void moveSnake() {
             else if (prevStep == KEY_UP) DoMove(UP);
             else if (prevStep == KEY_LEFT) DoMove(LEFT);
             else if (prevStep == KEY_RIGHT) DoMove(RIGHT);
+        }
+        if (step == 27) {
+            run = false;
         }
     
         if(snake.coord[0].x == apple.x
