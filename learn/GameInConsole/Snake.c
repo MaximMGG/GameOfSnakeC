@@ -32,6 +32,7 @@ typedef struct {
 
 Snake snake;
 struct Apple apple;
+int count = 0;
 
 void initMap() {
     for(int i = 0; i < height - 1; i++){
@@ -46,8 +47,8 @@ void initMap() {
 
 void initApple() {
     srand(time(NULL));
-    apple.y = (int) rand() % height;
-    apple.x = (int) rand() % width;
+    apple.y = (int) rand() % (height - 4) + 2;
+    apple.x = (int) rand() % (width - 4) + 2;
     map[apple.y][apple.x] = '$';
 }
 
@@ -124,24 +125,50 @@ void DoMove(enum Direction d) {
         snake.coord[i].y = oldY;
     }
 
-    map[y][x] = ' ';
-
-    if (eat == true) {
+    if (apple.x == snake.coord[0].x && apple.y == snake.coord[0].y) {
         snake.length++;
         snake.coord[snake.length - 1].x = x;
         snake.coord[snake.length - 1].y = y;
+        eat = true;
+        count++;
+    } else {
+        map[y][x] = ' ';
     }
+
+
 }
 
 void putAppleOnMap() {
     if (eat == true) {
        srand(time(NULL));
        map[apple.y][apple.x] = ' ';
-       apple.x = rand() % width;
-       apple.y = rand() % height;
+       apple.x = rand() % (width - 4) + 2;
+       apple.y = rand() % (height - 4) + 2;
        map[apple.y][apple.x] = '$';
        eat = false;
     }
+}
+
+void printCount() {
+    mvprintw(0, 140, "Score is : %d", count);
+}
+
+void checkWall() {
+    if (map[snake.coord[0].y][snake.coord[0].x] == '#') {
+        run = false;
+    }
+}
+
+void checkBodyCross() {
+    int y = snake.coord[0].y;
+    int x = snake.coord[0].x;
+    for(int i = 1; i < snake.length; i++){
+        if (y == snake.coord[i].y && x == snake.coord[i].x) { 
+            run = false;
+            break;
+        }
+    }
+
 }
 
 void moveSnake() {
@@ -152,6 +179,7 @@ void moveSnake() {
         putSnakeOnMap();
         putAppleOnMap();
         showMap();
+        printCount();
 
         step = getch();
 
@@ -165,12 +193,12 @@ void moveSnake() {
             else if (prevStep == KEY_LEFT) DoMove(LEFT);
             else if (prevStep == KEY_RIGHT) DoMove(RIGHT);
         }
+        checkWall();
+        checkBodyCross();
         if (step == 27) {
             run = false;
         }
     
-        if(snake.coord[0].x == apple.x
-                && snake.coord[0].y == apple.y)  eat = true;
         Sleep(100);
     } while(run);
 }
