@@ -1,5 +1,5 @@
 @echo off
-gcc -o game PointerTest.c
+gcc -o game PointerAriphmetic.c
 game
 
 REM -lncursesw 
