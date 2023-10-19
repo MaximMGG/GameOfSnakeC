@@ -1,9 +1,13 @@
 #include <stdio.h>
 #include <stdbool.h>
 #include <inttypes.h>
+#include <limits.h>
+#include <float.h>
 
 void ints();
 void doubles();
+void maximum();
+void stringf();
 
 int main() {
 
@@ -22,8 +26,8 @@ int main() {
 
     printf("un = %u, but not %d size = %lld\n", un, un, sizeof(un));
     printf("end = %hd and %d size = %lld\n", end, end, sizeof(end));
-    printf("big = %ld, but not %hd size = %lld\n", big, big, sizeof(big));
-    printf("verybig = %lld, but not %ld size = %lld\n", verybig, verybig, sizeof(verybig));
+    printf("big = %ld, but not %lld size = %lld\n", big, big, sizeof(big));
+    printf("verybig = %lld, but not %lld size = %lld\n", verybig, verybig, sizeof(verybig));
 
     char ch;
     printf("Enter some symbol\n");
@@ -32,11 +36,50 @@ int main() {
 
     ints();
     doubles();
+    puts("------------------");
+    maximum();
+    puts("------------------");
+    stringf();
 
 
     return 0;
 }
+#define BLURB "Authentic imitation!"
+#define PAGES 336
+#define WORDS 65618
 
+void stringf() {
+    printf("[%2s]\n", BLURB);
+    printf("[%24s]\n", BLURB);
+    printf("[%24.5s]\n", BLURB);
+    printf("[%-24.5s]\n", BLURB);
+    puts("------------------");
+    short num = PAGES;
+    short mnum = -PAGES;
+
+    printf("num is short and unsigned short: %hd %hu\n", num, num);
+    printf("-num is short and unsigned short: %hd %hu\n", mnum, mnum);
+    printf("num how int and char: %d %c\n", num, num);
+    printf("WORDS how int, short and char : %d %hd %c\n", WORDS, WORDS, WORDS);
+    puts("------------------");
+    float n1 = 3.0;
+    double n2 = 3.0;
+    long n3 = 2000000000;
+    long n4 = 1234567890;
+
+    printf("%.le %.le %.le %.le\n", n1, n2, n3, n4);
+    printf("%ld %ld\n", n3, n4);
+    printf("%ld %ld %ld %ld\n",n1, n2, n3, n4);
+
+
+}
+
+void maximum(){ 
+    printf("Maximum integer val is : %d\n", INT_MAX);
+    printf("Minimum integer val is : %d\n", INT_MIN);
+    // printf("Maximum float val is : %f\n", );
+    printf("Minimum integer val is : %d\n", INT_MIN);
+}
 
 void ints(){ 
 
