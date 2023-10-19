@@ -1,3 +1,5 @@
 @echo off
-gcc -o game Snake.c -lncursesw 
+gcc -o game PointerTest.c
 game
+
+REM -lncursesw 
