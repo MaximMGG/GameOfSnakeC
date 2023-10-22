@@ -1,5 +1,5 @@
 @echo off
-gcc -o game structPointer.c student.c
+gcc -o game pointersInFuncArgs.c student.c
 game
 
 
