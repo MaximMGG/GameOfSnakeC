@@ -1,5 +1,6 @@
 @echo off
-gcc -o game PointerAriphmetic2.c
+gcc -o game structPointer.c student.c
 game
 
-REM -lncursesw 
+
+REM -lncursesw

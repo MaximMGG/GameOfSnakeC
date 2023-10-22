@@ -2,6 +2,7 @@
 
 
 char map[30][120];
+int y, x;
 
 
 
@@ -13,7 +14,7 @@ void movement(int c, int *y, int *x) {
 
 }
 
-void dungeon(int cols, int rows) {
+void dungeon(int cols, int rows, char c) {
 
         for(int yy = 0; yy <= rows - 0; yy++){
            for(int xx = 0; xx < cols - 0; xx++){
@@ -28,6 +29,10 @@ void dungeon(int cols, int rows) {
                map[yy][xx] = ' ';
            } 
         }
+        if (c == KEY_UP && map[*y-1][*x] == ' ') (*y)--;
+        else if (c == KEY_DOWN && map[*y+1][*x] == ' ') (*y)++;
+        else if (c == KEY_LEFT && map[*y][*x-1] == ' ') (*x)--;
+        else if (c == KEY_RIGHT && map[*y][*x+1] == ' ') (*x)++;
 }
 
 
