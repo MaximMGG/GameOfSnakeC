@@ -1,5 +1,5 @@
 @echo off
-gcc -o game pointersInFuncArgs.c student.c
+gcc -o game Snake.c -lncursesw
 game
 
 
