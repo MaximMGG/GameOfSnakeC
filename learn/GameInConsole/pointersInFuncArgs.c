@@ -24,19 +24,24 @@ int main(){
     strcpy(str1, "Hello, World!!!");
     int arr[5] = {1, 2, 3, 4, 5};
 
-    print_str(str1);
-    print_str("Wowowowoy");
-    print_char("qwerqwerqwer!@");
-    print_int(arr, 5);
+    // print_str(str1);
+    // print_str("Wowowowoy");
+    // print_char("qwerqwerqwer!@");
+    // print_int(arr, 5);
 
     Arr_int ar;
     ar.len = 5;
     Arr_int_allocMemory(&ar);
+
     for(int i = 0; i < ar.len; i++){
         ar.arr[i] = i;
     }
-    print_int(ar.arr, ar.len);
+    // print_int(ar.arr, ar.len);
     Arr_int_freeMemory(&ar);
+
+    float sum;
+    MySum(2.3, 1.4, &sum);
+    printf("%f\n", sum);
 
     return 0;
 }
@@ -73,5 +78,5 @@ void print_str(const char *str) {
     //
     // puts("");
     
-    printf("%s\n", str);
+    // printf("%s\n", str);
 }
