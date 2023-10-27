@@ -26,3 +26,33 @@ student * addStudent(student *st_p,
 }
 
 
+
+void addCourse(student *st){
+    st->course++;
+
+}
+
+void addAge(student *st) {
+    st->age++;
+}
+
+void modifyName(student *st, char *new_name) {
+    strcpy(st->nm, new_name);
+}
+
+
+void deltePos(student *st, int pos, int *student_counter) {
+    for(int i = pos; i < *student_counter - 1; i++){
+        strcpy(st[i].nm, st[i + 1].nm);
+        st[i].course = st[i + 1].course;
+        st[i].age = st[i + 1].age;
+    }
+    (*student_counter)--;
+}
+
+
+student_list initStudentList() {
+    student_list t = {addCourse, addAge, modifyName, deltePos};
+    return t;
+}
+

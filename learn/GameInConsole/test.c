@@ -64,6 +64,7 @@ int main() {
 
     // arr = "Hello";
 
+     
     forN(i, 10) {
         printf("%c", *arr);
         arr++;
